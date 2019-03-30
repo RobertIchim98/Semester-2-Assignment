@@ -21,24 +21,30 @@ public class DatabaseGUI extends JFrame implements ActionListener, MouseListener
 {
 	
 	private JButton button1;
+	private DatabaseConnection connection1;
 	
 	public DatabaseGUI()
-	{
-		super("Crime Statistics");
-		
-		JPanel Panel1=new JPanel();
-		
+	{	
+		super("Crime Data info");
 		setLayout(new BorderLayout());
+		
+		JFrame Frame=new JFrame("Crime Data Information");
+		JPanel Panel1=new JPanel();
+		button1=new JButton("click to query");
+		//DatabaseConnection connection1=new DatabaseConnection();
+		
 		
 		add(Panel1,BorderLayout.CENTER);
 		
+		Panel1.add(button1);
+		
+		Panel1.setSize(700,700);
+		setSize(700,700);
+		setVisible(true);
+		
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 	}
-	
-	
-
-	
-	
 	
 	
 	@Override
@@ -72,9 +78,13 @@ public class DatabaseGUI extends JFrame implements ActionListener, MouseListener
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
-		
+	public void actionPerformed(ActionEvent anything) 
+	{
+		if (anything.getSource() == button1)
+		{
+			DatabaseConnection connection1=new DatabaseConnection();
+			
+		}
 	}
 	
 }

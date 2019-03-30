@@ -6,7 +6,8 @@ public class Control
 
 	public static void main(String[] args) 
 	{
-		DatabaseConnection connection1=new DatabaseConnection();
+		DatabaseGUI gui1=new DatabaseGUI();
+		//DatabaseConnection con1=new DatabaseConnection();
 	}
 }
 
