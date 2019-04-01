@@ -1,27 +1,18 @@
 package com.programDevelopment;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JSlider;
-import javax.swing.JTextField;
+import javax.swing.*;
+import javax.swing.border.*;
+import java.awt.*;
+import java.awt.GridLayout;
+import java.awt.event.*;
 import java.util.Random;
 
 public class DatabaseGUI extends JFrame implements ActionListener, MouseListener
 {
 	
 	private JButton button1;
-	private DatabaseConnection connection1;
+	public DatabaseConnection connection1;
+	//private DatabaseConnection connection1;
 	
 	public DatabaseGUI()
 	{	
@@ -31,16 +22,20 @@ public class DatabaseGUI extends JFrame implements ActionListener, MouseListener
 		JFrame Frame=new JFrame("Crime Data Information");
 		JPanel Panel1=new JPanel();
 		button1=new JButton("click to query");
-		//DatabaseConnection connection1=new DatabaseConnection();
-		
+		Panel1.setLayout(null);
 		
 		add(Panel1,BorderLayout.CENTER);
 		
+				
 		Panel1.add(button1);
+		button1.setBounds(50,100,100,40);
+		
+		
 		
 		Panel1.setSize(700,700);
 		setSize(700,700);
 		setVisible(true);
+		button1.addActionListener(this);
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
@@ -82,7 +77,10 @@ public class DatabaseGUI extends JFrame implements ActionListener, MouseListener
 	{
 		if (anything.getSource() == button1)
 		{
-			DatabaseConnection connection1=new DatabaseConnection();
+			//System.out.println("Button is pressed");
+			connection1 =  new DatabaseConnection();
+			JOptionPane.showMessageDialog(this,connection1);
+		
 			
 		}
 	}

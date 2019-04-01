@@ -24,7 +24,7 @@ public class DatabaseConnection
 			//select the first four columns
 			while(rs.next()) 
 			{
-				System.out.println(rs.getString(1)+"||"+rs.getString(2)+"||"+rs.getString(3)+"||"+rs.getInt(4));
+				System.out.println(rs.getString(1)+"\t\t"+rs.getString(2)+"\t\t"+rs.getString(3)+"\t"+rs.getInt(4));
 			}
 		
 			con.close();  
@@ -32,9 +32,6 @@ public class DatabaseConnection
 		catch(Exception e)
 		{ 
 			System.out.println("Could not connect to database:"+ e); 
-		}	
-		
+		}
 	}
-	
-
 }
