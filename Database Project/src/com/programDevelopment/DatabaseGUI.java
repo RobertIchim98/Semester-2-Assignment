@@ -24,7 +24,7 @@ public class DatabaseGUI extends JFrame implements ActionListener, MouseListener
 	
 	public DatabaseGUI()
 	{	
-		super("Crime Data info");
+		super("Irish Crime Data info");
 		setLayout(new BorderLayout());
 		
 		JFrame Frame=new JFrame("Crime Data Information");
@@ -71,6 +71,8 @@ public class DatabaseGUI extends JFrame implements ActionListener, MouseListener
 			String value1=topics1.getSelectedItem().toString();	
 			String value2=topics2.getSelectedItem().toString();	
 			DatabaseConnection connection1=new DatabaseConnection(value1,value2);
+			ArrayList<String> resultQuery=connection1.QueryAll();
+			 
 		}
 	}
 	
