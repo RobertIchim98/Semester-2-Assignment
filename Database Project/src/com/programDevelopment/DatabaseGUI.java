@@ -12,8 +12,15 @@ public class DatabaseGUI extends JFrame implements ActionListener, MouseListener
 	
 	private JButton button1;
 	private DatabaseConnection connection1;
-	private String[] columnNames= new String[] {"Station", "Divisions",
-            "Dangerous Acts 2004", "Dangerous Acts 2016"};
+	private String[] columnNames= new String[] {
+			"Station", "Divisions",
+            "DANGEROUS_ACTS_2004", "DANGEROUS_ACTS_2016",
+            "ATTEMPTMURDER_RELATED2004","ATTEMPTMURDER_RELATED2016",
+            "KIDNAPPING_RELATED2004","KIDNAPPING_RELATED2016",
+            "BURGLARY_RELATED2004","BURGLARY_RELATED2016",
+            "WEAPONS_EXPLOSIVES2004","WEAPONS_EXPLOSIVES2016"};
+	private JComboBox<String> topics1= new JComboBox<>(columnNames);
+	private JComboBox<String> topics2= new JComboBox<>(columnNames);
 	
 	public DatabaseGUI()
 	{	
@@ -22,10 +29,10 @@ public class DatabaseGUI extends JFrame implements ActionListener, MouseListener
 		
 		JFrame Frame=new JFrame("Crime Data Information");
 		JPanel Panel1=new JPanel();
-		button1=new JButton("click to query");
+		JLabel label1=new JLabel("Select two rows to inspect data:");
+		button1=new JButton("Query The selected");
 		
-		JComboBox<String> topics1= new JComboBox<>(columnNames);
-		JComboBox<String> topics2= new JComboBox<>(columnNames);
+		
 		
 		Panel1.setLayout(null);
 		
@@ -35,15 +42,18 @@ public class DatabaseGUI extends JFrame implements ActionListener, MouseListener
 		Panel1.add(button1);
 		Panel1.add(topics1);
 		Panel1.add(topics2);
+		Panel1.add(label1);
 		
-		button1.setBounds(100,450,150,40);
-		topics1.setBounds(100,350,150,40);
-		topics2.setBounds(100,250,150,40);
+		label1.setBounds(100,10,400,40);
+		button1.setBounds(100,350,230,60);
+		topics1.setBounds(100,80,230,60);
+		topics2.setBounds(100,215,230,60);
+		label1.setFont(new Font("Serif", Font.CENTER_BASELINE, 24));
 		
 		
 		
 		Panel1.setSize(1080,700);
-		setSize(1080,700);
+		setSize(1080,600);
 		setVisible(true);
 		button1.addActionListener(this);
 		
@@ -51,6 +61,18 @@ public class DatabaseGUI extends JFrame implements ActionListener, MouseListener
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 	}
+	
+	
+	@Override
+	public void actionPerformed(ActionEvent anything) 
+	{
+		if (anything.getSource() == button1)
+		{	
+			String value1=topics1.getSelectedItem().toString();	
+			String value2=topics2.getSelectedItem().toString();		
+		}
+	}
+	
 	
 	
 	@Override
@@ -83,17 +105,6 @@ public class DatabaseGUI extends JFrame implements ActionListener, MouseListener
 		
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent anything) 
-	{
-		if (anything.getSource() == button1)
-		{
-			//System.out.println("Button is pressed");
-			connection1 =  new DatabaseConnection();
-			JOptionPane.showMessageDialog(this,connection1);
-		
-			
-		}
-	}
+
 	
 }
