@@ -5,7 +5,8 @@ import javax.swing.border.*;
 import java.awt.*;
 import java.awt.GridLayout;
 import java.awt.event.*;
-import java.util.Random;
+import java.util.*;
+
 
 public class DatabaseGUI extends JFrame implements ActionListener, MouseListener
 {
@@ -13,7 +14,6 @@ public class DatabaseGUI extends JFrame implements ActionListener, MouseListener
 	private JButton button1;
 	private DatabaseConnection connection1;
 	private String[] columnNames= new String[] {
-			"Station", "Divisions",
             "DANGEROUS_ACTS_2004", "DANGEROUS_ACTS_2016",
             "ATTEMPTMURDER_RELATED2004","ATTEMPTMURDER_RELATED2016",
             "KIDNAPPING_RELATED2004","KIDNAPPING_RELATED2016",
@@ -69,7 +69,8 @@ public class DatabaseGUI extends JFrame implements ActionListener, MouseListener
 		if (anything.getSource() == button1)
 		{	
 			String value1=topics1.getSelectedItem().toString();	
-			String value2=topics2.getSelectedItem().toString();		
+			String value2=topics2.getSelectedItem().toString();	
+			DatabaseConnection connection1=new DatabaseConnection(value1,value2);
 		}
 	}
 	

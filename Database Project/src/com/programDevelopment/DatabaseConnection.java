@@ -1,12 +1,20 @@
 package com.programDevelopment;
 
 import java.sql.*;
+import java.util.*;
 
 public class DatabaseConnection 
 {
 	
-	public DatabaseConnection()
+	String value1;
+	String value2;
+	final ArrayList<String> queryResult= new ArrayList();
+	
+	public ArrayList<String> DatabaseConnection(String value1,String value2)
 	{
+		this.value1=value1;
+		this.value2=value2;
+		String data1;
 		try
 		{  
 			//step1 load the driver class  
@@ -20,18 +28,24 @@ public class DatabaseConnection
 			Statement stmt=con.createStatement(); 
 		
 			ResultSet rs=stmt.executeQuery("select * from CRIMES");  
-		
-			//select the first four columns
-			while(rs.next()) 
+			
+			while(rs.next())
 			{
-				System.out.println(rs.getString(1)+"\t\t"+rs.getString(2)+"\t\t"+rs.getString(3)+"\t"+rs.getInt(4));
+				System.out.println(rs.getString("Divisions")+"||"
+								   +rs.getString(this.value1)+"||"
+						           +rs.getString(this.value2));
+				queryResult.add(rs.getString(rs.getString("Divisions")+"||"+rs.getString(this.value1)+"||"+rs.getString(this.value2)));
+				
 			}
+			
 		
-			con.close();  
+			
+			//con.close();  
 		}
 		catch(Exception e)
 		{ 
 			System.out.println("Could not connect to database:"+ e); 
 		}
+		return queryResult;
 	}
 }
