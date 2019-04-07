@@ -10,7 +10,9 @@ public class CrimeQuery
 {	
 	private String value1;
 	private String value2;
-	static Vector<Vector<String>> data = new Vector<Vector<String>>();
+	private String[] columnsDivisions={"Divisions",value1,value2};
+	JTable table;
+	String [][] tableData;
 	
 	Connection connection1;
 	
@@ -19,35 +21,25 @@ public class CrimeQuery
 		this.setValue1(value1);
 		this.setValue2(value2);
 		connection1=DatabaseConnection.getConnection();
-	}
+	}	
+	 
 	public JTable QueryAll() throws SQLException
-	{
+	{	
 		//statement object  
 		Statement stmt=connection1.createStatement();
-	
+		
 		//this will select divisions and what two topics the user wants(value1,value2)
 		ResultSet rs=stmt.executeQuery("select  Divisions,"+this.getValue1()+","+this.getValue2()+" from CRIMES");  
-		
-		Vector<String> columnNames = new Vector<String>();
-        columnNames.add("Divisions");
-        columnNames.add(this.getValue1());
-        columnNames.add(this.getValue2());
-		
-		
 		//iterate through to add query data into queryResult 
+		 
 		while(rs.next())
 		{
 			System.out.println(rs.getString("Divisions")+"||"+rs.getString(this.getValue1())+"||"+rs.getString(this.getValue2()));
-			Vector<String> vString = new Vector<String>();
-			
-			vString.addElement(rs.getString("Divisions"));
-            vString.addElement(rs.getString(this.getValue1()));
-            vString.addElement(rs.getString(this.getValue2()));
-
-            data.add(vString);
+			//getTableData().add(rs.getString("Divisions"));
+			//getTableData().add(rs.getString(this.getValue1()));
+			//getTableData().add(rs.getString(this.getValue2()));			
 		}
-		JTable querytable=new JTable(data,columnNames);
-		return querytable;
+		return table;
 	}
 	
 	
@@ -66,10 +58,6 @@ public class CrimeQuery
 		}
 	}
 	
-	
-	 
-	 
-
 	public String getValue1() {
 		return value1;
 	}
@@ -87,5 +75,7 @@ public class CrimeQuery
 	{
 		this.value2 = value2;
 	}
+
+
 	
 }
