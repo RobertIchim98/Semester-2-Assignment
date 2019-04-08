@@ -26,15 +26,14 @@ public class DatabaseGUI extends JFrame implements ActionListener, MouseListener
 	private JComboBox<String> topics2= new JComboBox<>(columnNames);
 	
 	//test purposes 
-	String jcolumn[]= {"DANGEROUS_ACTS_2004", "DANGEROUS_ACTS_2016"};
+	String jcolumn[]= {"Divisions","DANGEROUS_ACTS_2004", "DANGEROUS_ACTS_2016"};
 	String[][] jdata= { 
-            { "Crime this", "Crime That"}, 
-            { "yesyes", "hello"} 
+            { "Crime this", "Crime That","yesss"}, 
+            { "yesyes", "hello","nooo"} 
         }; 
 	
 	public Vector<String> columns1=new Vector<String>();
 	public Vector<String> data=new Vector<String>();
-	private JTable table=new JTable(jdata,jcolumn);
 	
 	
 	public DatabaseGUI()
@@ -46,14 +45,8 @@ public class DatabaseGUI extends JFrame implements ActionListener, MouseListener
 		JPanel Panel1=new JPanel();
 		JLabel label1=new JLabel("Select two rows to inspect data:");
 		button1=new JButton("Query The selected");
-		JScrollPane scrolltable = new JScrollPane(table); 
+		//JScrollPane scrolltable = new JScrollPane(table); 
 		
-		/*
-		columns1.addElement("Crime Stuff");
-		columns1.addElement("More Crime Stuff");
-		data.addElement("Stufff");
-		data.addElement("More Stuff");
-		*/
 		Panel1.setLayout(null);
 		
 		add(Panel1,BorderLayout.CENTER);
@@ -63,14 +56,14 @@ public class DatabaseGUI extends JFrame implements ActionListener, MouseListener
 		Panel1.add(topics1);
 		Panel1.add(topics2);
 		Panel1.add(label1);
-		Panel1.add(scrolltable);
+		//Panel1.add(scrolltable);
 		
 		label1.setBounds(100,10,400,40);
 		button1.setBounds(100,350,230,60);
 		topics1.setBounds(100,80,230,60);
 		topics2.setBounds(100,215,230,60);
-		table.setBounds(500,10,500,500);
-		scrolltable.setBounds(500,10,500,500);
+		//table.setBounds(500,10,500,500);
+		//scrolltable.setBounds(500,10,500,500);
 		label1.setFont(new Font("Serif", Font.CENTER_BASELINE, 24));
 		
 		
@@ -95,19 +88,22 @@ public class DatabaseGUI extends JFrame implements ActionListener, MouseListener
 			String value2=topics2.getSelectedItem().toString();
 			
 			CrimeQuery query1=new CrimeQuery(value1,value2);
-			try
-			{
-				JOptionPane.showMessageDialog(this,table);
-				table=query1.QueryAll();
-			} 
-			catch (SQLException e) 
-			{
-				e.printStackTrace();
-			}
+			//JOptionPane.showMessageDialog(this,table);
+			JTable table=query1.QueryAll();
+			JOptionPane.showMessageDialog(this,table);
+			
+			
+			//queryAllTable(table);
 			
 			
 		}
 	}
+	public void queryAllTable(JTable table)
+	{
+		
+	}
+	
+	
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		// TODO Auto-generated method stub
