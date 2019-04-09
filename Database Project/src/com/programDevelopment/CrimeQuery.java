@@ -77,13 +77,20 @@ public class CrimeQuery extends JFrame
 	
 	public void sumQuery() throws SQLException
 	{
-		Statement stmt=connection1.createStatement();
-		PreparedStatement statement=  connection1.prepareStatement("select sum("+this.getValue1()+"),sum("+this.getValue2()+") from CRIMES");
-	    ResultSet rs= statement.executeQuery();
-		
-		while(rs.next())
+		try
 		{
-			System.out.println(rs.getString(this.getValue1())+"||"+rs.getString(this.getValue2()));
+			Statement stmt=connection1.createStatement();
+			PreparedStatement statement=  connection1.prepareStatement("select sum("+this.getValue1()+"),sum("+this.getValue2()+") from CRIMES");
+		    ResultSet rs= statement.executeQuery();
+			
+			while(rs.next())
+			{
+				//System.out.println(rs.getString(this.getValue1())+"||"+rs.getString(this.getValue2()));
+			}
+		}
+		catch(Exception e)
+		{
+			
 		}
 	}
 	

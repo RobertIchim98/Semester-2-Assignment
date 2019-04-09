@@ -24,17 +24,14 @@ public class DatabaseGUI extends JFrame implements ActionListener, MouseListener
             "WEAPONS_EXPLOSIVES2004","WEAPONS_EXPLOSIVES2016"};
 	private JComboBox<String> topics1= new JComboBox<>(columnNames);
 	private JComboBox<String> topics2= new JComboBox<>(columnNames);
-	
-	//test purposes 
-	String jcolumn[]= {"Divisions","DANGEROUS_ACTS_2004", "DANGEROUS_ACTS_2016"};
-	String[][] jdata= { 
-            { "Crime this", "Crime That","yesss"}, 
-            { "yesyes", "hello","nooo"} 
-        }; 
+	public JPanel Panel1;
+	public JButton button2;
 	
 	public Vector<String> columns1=new Vector<String>();
 	public Vector<String> data=new Vector<String>();
-	
+	public String value1;
+	public String value2;
+	CrimeQuery query1;
 	
 	public DatabaseGUI()
 	{	
@@ -42,10 +39,12 @@ public class DatabaseGUI extends JFrame implements ActionListener, MouseListener
 		setLayout(new BorderLayout());
 		
 		//JFrame Frame=new JFrame("Crime Data Information");
-		JPanel Panel1=new JPanel();
+		Panel1=new JPanel();
 		JLabel label1=new JLabel("Select two rows to inspect data:");
 		button1=new JButton("Query The selected");
 		//JScrollPane scrolltable = new JScrollPane(table); 
+		button2=new JButton("Sum up rows");
+		
 		
 		Panel1.setLayout(null);
 		
@@ -56,14 +55,12 @@ public class DatabaseGUI extends JFrame implements ActionListener, MouseListener
 		Panel1.add(topics1);
 		Panel1.add(topics2);
 		Panel1.add(label1);
-		//Panel1.add(scrolltable);
 		
 		label1.setBounds(100,10,400,40);
 		button1.setBounds(100,350,230,60);
 		topics1.setBounds(100,80,230,60);
 		topics2.setBounds(100,215,230,60);
-		//table.setBounds(500,10,500,500);
-		//scrolltable.setBounds(500,10,500,500);
+
 		label1.setFont(new Font("Serif", Font.CENTER_BASELINE, 24));
 		
 		
@@ -72,6 +69,7 @@ public class DatabaseGUI extends JFrame implements ActionListener, MouseListener
 		setSize(1080,600);
 		setVisible(true);
 		button1.addActionListener(this);
+		button2.addActionListener(this);
 		
 		//removes the program from memory
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -82,19 +80,30 @@ public class DatabaseGUI extends JFrame implements ActionListener, MouseListener
 	@Override
 	public void actionPerformed(ActionEvent anything) 
 	{
+		
 		if (anything.getSource() == button1)
 		{	
-			String value1=topics1.getSelectedItem().toString();	
-			String value2=topics2.getSelectedItem().toString();
+			value1=topics1.getSelectedItem().toString();	
+			value2=topics2.getSelectedItem().toString();
 			
-			CrimeQuery query1=new CrimeQuery(value1,value2);
+			query1=new CrimeQuery(value1,value2);
 			//JOptionPane.showMessageDialog(this,table);
 			JTable table=query1.QueryAll();
-			JOptionPane.showMessageDialog(this,table);
-			
-			
+			//JOptionPane.showMessageDialog(this,table);
+			JScrollPane scrolltable = new JScrollPane(table);
+			scrolltable.setBounds(500,10,500,500);
+			Panel1.removeAll();
+			Panel1.invalidate();
+			Panel1.validate();
+			Panel1.repaint();
+			Panel1.add(scrolltable);
 			//queryAllTable(table);
-			
+			Panel1.add(button2);
+			button2.setBounds(100,350,230,60);
+		}
+		if(anything.getSource() == button2)
+		{
+			JOptionPane.showMessageDialog(this,"Sum up yo");
 			
 		}
 	}
