@@ -2,20 +2,17 @@ package com.programDevelopment;
 
 import javax.swing.*;
 import javax.swing.border.*;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.table.*;
 
 import java.awt.*;
-import java.awt.GridLayout;
 import java.awt.event.*;
 import java.sql.SQLException;
 import java.util.*;
 
 
+
 public class DatabaseGUI extends JFrame implements ActionListener, MouseListener
 {
-	
-	
-	
 	//column names which match the column names from the database
 	private String[] columnNames= new String[] {
             "DANGEROUS_ACTS_2004", "DANGEROUS_ACTS_2016",
@@ -23,8 +20,11 @@ public class DatabaseGUI extends JFrame implements ActionListener, MouseListener
             "KIDNAPPING_RELATED2004","KIDNAPPING_RELATED2016",
             "BURGLARY_RELATED2004","BURGLARY_RELATED2016",
             "WEAPONS_EXPLOSIVES2004","WEAPONS_EXPLOSIVES2016"};
-	private JComboBox<String> topics1= new JComboBox<>(columnNames);
-	private JComboBox<String> topics2= new JComboBox<>(columnNames);
+	
+	//combo boxes so user can select topics
+	private JComboBox<String> topics1= new JComboBox<>(getColumnNames());
+	private JComboBox<String> topics2= new JComboBox<>(getColumnNames());
+	
 	private JPanel Panel1;
 	
 	private JButton button1;
@@ -32,38 +32,70 @@ public class DatabaseGUI extends JFrame implements ActionListener, MouseListener
 	private JButton button3;
 	private JButton button4;
 	private JButton button5;
+	private JButton button6;
 
+	//values to store users choice from combo box
 	private String value1;
 	private String value2;
+	
+	//CrimeQuery variable to connect to database and do querries
 	private CrimeQuery query1;
 	
+	
+	//main GUI which will display the main menu first and initialise buttons,styles and listeners
 	public DatabaseGUI()
 	{	
 		super("Irish Crime Data info");
 		
-		button1=new JButton("Query The selected");
-		button2=new JButton("Sum up rows");
-		button3=new JButton("Select new data");
-		button4=new JButton("<- go back");
-		button5=new JButton("Max rows");
+		//buttons that will be used
+		setButton1(new JButton("Look at the data"));
+		setButton2(new JButton("Total Crimes"));
+		setButton3(new JButton("Select new data"));
+		setButton4(new JButton("<- go back"));
+		setButton5(new JButton("Top 10 Unsafe"));
+		setButton6(new JButton("Top 10 Safe"));
+		
+		//setting font for all buttons
+		getTopics1().setFont(new Font("Serif", Font.CENTER_BASELINE, 12));
+		getTopics2().setFont(new Font("Serif", Font.CENTER_BASELINE, 12));
+		getButton1().setFont(new Font("Serif", Font.CENTER_BASELINE, 19));
+		getButton2().setFont(new Font("Serif", Font.CENTER_BASELINE, 19));
+		getButton3().setFont(new Font("Serif", Font.CENTER_BASELINE, 19));
+		getButton4().setFont(new Font("Serif", Font.CENTER_BASELINE, 19));
+		getButton5().setFont(new Font("Serif", Font.CENTER_BASELINE, 19));
+		getButton6().setFont(new Font("Serif", Font.CENTER_BASELINE, 19));
+		
+		//setting up style
+		
+		getTopics1().setBackground(Color.white);
+		getTopics2().setBackground(Color.white);
+		getPanel1().setBackground(Color.white);
+		getButton3().setBackground(Color.LIGHT_GRAY);
+		getButton4().setBackground(Color.LIGHT_GRAY);
 		
 		
+		//setting up layout and adding a panel
 		setLayout(new BorderLayout());
 	
-		Panel1=new JPanel();
-
+		setPanel1(new JPanel());
+		
+		//start the main menu
 		selectMenu();
 		
-		Panel1.setSize(1080,700);
+		//set the panel size and window size
+		getPanel1().setSize(1080,700);
 		setSize(1080,600);
 		setVisible(true);
-		button1.addActionListener(this);
-		button2.addActionListener(this);
-		button3.addActionListener(this);
-		button4.addActionListener(this);
-		button5.addActionListener(this);
 		
-		//removes the program from memory
+		
+		getButton1().addActionListener(this);
+		getButton2().addActionListener(this);
+		getButton3().addActionListener(this);
+		getButton4().addActionListener(this);
+		getButton5().addActionListener(this);
+		getButton6().addActionListener(this);
+		
+		//removes the program from memory (sometimes takes up too much memory, ran out at one point)
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 	}
@@ -72,27 +104,32 @@ public class DatabaseGUI extends JFrame implements ActionListener, MouseListener
 	@Override
 	public void actionPerformed(ActionEvent anything) 
 	{
+		//whenever the buttons are pressed the function will be called to display the menu
 		
-		if (anything.getSource() == button1)
+		if (anything.getSource() == getButton1())
 		{	
 			queryAllMenu();
 		}
 		
-		if(anything.getSource() == button2)
+		if(anything.getSource() == getButton2())
 		{
 			querySumMenu();
 		}
-		if(anything.getSource() == button3)
+		if(anything.getSource() == getButton3())
 		{
 			selectMenu();
 		}
-		if(anything.getSource() == button4)
+		if(anything.getSource() == getButton4())
 		{
 			queryAllMenu();
 		}
-		if(anything.getSource() == button5)
+		if(anything.getSource() == getButton5())
 		{
 			queryMaxMenu();
+		}
+		if(anything.getSource()==getButton6())
+		{
+			queryMinMenu();
 		}
 		
 		
@@ -100,112 +137,161 @@ public class DatabaseGUI extends JFrame implements ActionListener, MouseListener
 	}
 	
 	
+	//this is the main menu where you chose two columns to inspect
 	private void selectMenu()
 	{
-		clearPanel(Panel1);
+		//clear the panel first
+		clearPanel(getPanel1());
 		
 		JLabel label1=new JLabel("Select two rows to inspect data:");
 		
-		Panel1.setLayout(null);
+		//set up panel
+		getPanel1().setLayout(null);
+		add(getPanel1(),BorderLayout.CENTER);
 		
-		add(Panel1,BorderLayout.CENTER);
+		//add buttons to panel
+		getPanel1().add(getButton1());
+		getPanel1().add(getTopics1());
+		getPanel1().add(getTopics2());
+		getPanel1().add(label1);
 		
-				
-		Panel1.add(button1);
-		Panel1.add(topics1);
-		Panel1.add(topics2);
-		Panel1.add(label1);
 		
-		label1.setBounds(100,10,400,40);
-		button1.setBounds(100,350,230,60);
-		topics1.setBounds(100,80,230,60);
-		topics2.setBounds(100,215,230,60);
+		//manually set their position
+		label1.setBounds(380,10,400,40);
+		getButton1().setBounds(430,350,230,60);
+		getTopics1().setBounds(430,80,230,60);
+		getTopics2().setBounds(430,215,230,60);
 
 		label1.setFont(new Font("Serif", Font.CENTER_BASELINE, 24));	
 	}
 	
-	
+	//menu where user will select what to see from data
 	private void queryAllMenu()
 	{
-		clearPanel(Panel1);
+		clearPanel(getPanel1());
 		
-		setValue1(topics1.getSelectedItem().toString());	
-		setValue2(topics2.getSelectedItem().toString());
+		//get value from combo boxes into Values
+		setValue1(getTopics1().getSelectedItem().toString());	
+		setValue2(getTopics2().getSelectedItem().toString());
 		
-		//load user values into query1
+		//load user values into query1 by calling CrimeQuery and passing the values
 		setQuery1(new CrimeQuery(getValue1(),getValue2()));
 		
-		//get the table
+		//get the table from QueryAll from CrimeQuery class
 		JTable table=getQuery1().QueryAll();
 		
 		//add table with new options
 		JScrollPane scrolltable = new JScrollPane(table);
 		scrolltable.setBounds(500,10,500,500);
 	
-		Panel1.add(scrolltable);
-		//queryAllTable(table);
+		getPanel1().add(scrolltable);
 		
-		Panel1.add(button2);
-		Panel1.add(button5);
-		Panel1.add(button3);
-		button3.setBounds(260,10,180,60);
-		button2.setBounds(100,350,230,60);
-		button5.setBounds(100,215,230,60);
+		getPanel1().add(getButton2());
+		getPanel1().add(getButton5());
+		getPanel1().add(getButton3());
+		getPanel1().add(getButton6());
+		getButton3().setBounds(100,10,230,60);
+		getButton6().setBounds(100,215,230,60);
+		getButton5().setBounds(100,315,230,60);
+		getButton2().setBounds(100,410,230,60);
+		
+		
+		
 	}
 	
+	//this will display the sum of the two columns selected by user
 	private void querySumMenu()
 	{
-		clearPanel(Panel1);
+		clearPanel(getPanel1());
 		
 		JLabel label1=new JLabel("This is the total numbers\nFor:"+getValue1()+"and"+getValue2());
+		
+		//get table from sumQuery and put it in table
 		JTable table=getQuery1().sumQuery(); 
 		
 		JScrollPane scrolltable = new JScrollPane(table);
 		label1.setBounds(100,10,400,40);
 		scrolltable.setBounds(500,10,500,500);
-		Panel1.add(scrolltable);
-		Panel1.add(button3);
-		Panel1.add(button4);
-		button3.setBounds(260,10,180,60);
-		button4.setBounds(80,10,180,60);
+		getPanel1().add(scrolltable);
+		getPanel1().add(getButton3());
+		getPanel1().add(getButton4());
+		getButton3().setBounds(260,10,180,60);
+		getButton4().setBounds(80,10,180,60);
 	}
 	
+	//This  will return the top 10 worst places in regards to the columns selected
 	private void queryMaxMenu()
 	{
-		clearPanel(Panel1);
+		clearPanel(getPanel1());
 		
 		JLabel label1=new JLabel("Top 10 worst from "+this.getValue1()+":");
 		JLabel label2=new JLabel("Top 10 worst from "+this.getValue2()+":");
 		
+		//two separate tables for the queries
 		JTable table1=getQuery1().MaxQuery(value1); 
 		JTable table2=getQuery1().MaxQuery(value2); 
+		
+		//add them each to a scrolltable so they can be displayed properly
+		JScrollPane scrolltable1 = new JScrollPane(table1);
+		JScrollPane scrolltable2= new JScrollPane(table2);
+		
+		scrolltable1.setBounds(500,60,500,190);
+		scrolltable2.setBounds(500,310,500,190);
+		getButton3().setBounds(260,10,180,60);
+		getButton4().setBounds(80,10,180,60);
+		label1.setBounds(30,10,500,190);
+		label2.setBounds(30,280,500,190);
+		
+		label1.setFont(new Font("Serif", Font.CENTER_BASELINE, 19));
+		label2.setFont(new Font("Serif", Font.CENTER_BASELINE, 19));
+		
+		//add buttons with select new data and go back
+		getPanel1().add(scrolltable1);
+		getPanel1().add(scrolltable2);
+		getPanel1().add(getButton3());
+		getPanel1().add(getButton4());
+		getPanel1().add(label1);
+		getPanel1().add(label2);
+	}
+	
+	//This will select the Top 10 safest places in regards to user option
+	private void queryMinMenu()
+	{
+		clearPanel(getPanel1());
+		
+		JLabel label1=new JLabel("Top 10 safe from "+this.getValue1()+":");
+		JLabel label2=new JLabel("Top 10 safe from "+this.getValue2()+":");
+		
+		//min query will also take each value individually and display it next to each other
+		JTable table1=getQuery1().MinQuery(value1); 
+		JTable table2=getQuery1().MinQuery(value2); 
+		
 		
 		JScrollPane scrolltable1 = new JScrollPane(table1);
 		JScrollPane scrolltable2= new JScrollPane(table2);
 		
 		scrolltable1.setBounds(500,60,500,190);
 		scrolltable2.setBounds(500,310,500,190);
-		button3.setBounds(260,10,180,60);
-		button4.setBounds(80,10,180,60);
-		label1.setBounds(100,10,500,190);
-		label2.setBounds(100,280,500,190);
+		getButton3().setBounds(260,10,180,60);
+		getButton4().setBounds(80,10,180,60);
+		label1.setBounds(30,10,500,190);
+		label2.setBounds(30,280,500,190);
 		
-		label1.setFont(new Font("Serif", Font.CENTER_BASELINE, 15));
-		label2.setFont(new Font("Serif", Font.CENTER_BASELINE, 15));
+		label1.setFont(new Font("Serif", Font.CENTER_BASELINE, 19));
+		label2.setFont(new Font("Serif", Font.CENTER_BASELINE, 19));
 		
-		Panel1.add(scrolltable1);
-		Panel1.add(scrolltable2);
-		Panel1.add(button3);
-		Panel1.add(button4);
-		Panel1.add(label1);
-		Panel1.add(label2);
+		getPanel1().add(scrolltable1);
+		getPanel1().add(scrolltable2);
+		getPanel1().add(getButton3());
+		getPanel1().add(getButton4());
+		getPanel1().add(label1);
+		getPanel1().add(label2);
 		
 		
 	}
 	
 	
-	
-	//this will clear the panel so there wont be need for more
+	//this will clear the panel so i wont call 4 lines of code each time
 	private void clearPanel(JPanel Panel1)
 	{
 		Panel1.removeAll();
@@ -243,6 +329,9 @@ public class DatabaseGUI extends JFrame implements ActionListener, MouseListener
 		// TODO Auto-generated method stub
 		
 	}
+	
+	
+	//setters and getters
 
 
 	public String getValue1() {
@@ -272,6 +361,106 @@ public class DatabaseGUI extends JFrame implements ActionListener, MouseListener
 
 	public void setQuery1(CrimeQuery query1) {
 		this.query1 = query1;
+	}
+
+
+	public JButton getButton1() {
+		return button1;
+	}
+
+
+	public void setButton1(JButton button1) {
+		this.button1 = button1;
+	}
+
+
+	public JButton getButton2() {
+		return button2;
+	}
+
+
+	public void setButton2(JButton button2) {
+		this.button2 = button2;
+	}
+
+
+	public JButton getButton3() {
+		return button3;
+	}
+
+
+	public void setButton3(JButton button3) {
+		this.button3 = button3;
+	}
+
+
+	public JButton getButton4() {
+		return button4;
+	}
+
+
+	public void setButton4(JButton button4) {
+		this.button4 = button4;
+	}
+
+
+	public JButton getButton5() {
+		return button5;
+	}
+
+
+	public void setButton5(JButton button5) {
+		this.button5 = button5;
+	}
+
+
+	public JButton getButton6() {
+		return button6;
+	}
+
+
+	public void setButton6(JButton button6) {
+		this.button6 = button6;
+	}
+
+
+	public JPanel getPanel1() {
+		return Panel1;
+	}
+
+
+	public void setPanel1(JPanel panel1) {
+		Panel1 = panel1;
+	}
+
+
+	public JComboBox<String> getTopics1() {
+		return topics1;
+	}
+
+
+	public void setTopics1(JComboBox<String> topics1) {
+		this.topics1 = topics1;
+	}
+
+
+	public JComboBox<String> getTopics2() {
+		return topics2;
+	}
+
+
+	public void setTopics2(JComboBox<String> topics2) {
+		this.topics2 = topics2;
+	}
+
+
+	public String[] getColumnNames() {
+		return columnNames;
+	}
+
+
+	public void setColumnNames(String[] columnNames) {
+		this.columnNames = columnNames;
 	}
 
 

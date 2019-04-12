@@ -10,18 +10,20 @@ import java.awt.*;
 
 public class CrimeQuery extends JFrame
 {	
+	
 	private String value1;
 	private String value2;
 	JTable table;
 	
+	//create connection
+	private Connection connection1;
 	
-	Connection connection1;
-	
+	//take in the values from the combo boxes
 	 public CrimeQuery(String value1,String value2)
 	{
 		this.setValue1(value1);
 		this.setValue2(value2);
-		connection1=DatabaseConnection.getConnection();
+		setConnection1(DatabaseConnection.getConnection());
 	}	
 	 
 	//this will query the whole set required by user 
@@ -29,15 +31,20 @@ public class CrimeQuery extends JFrame
 	{	
 		try
 		{
-			String queryStatement="select  Divisions,"+this.getValue1()+","+this.getValue2()+" from CRIMES";
-			PreparedStatement statement=connection1.prepareStatement(queryStatement);
+			//will create the query statement along with PreparedStatement to be sent to CreateQueryTable
+			String queryStatement="select  Station,"+this.getValue1()+","+this.getValue2()+" from CRIMES";
+			PreparedStatement statement=getConnection1().prepareStatement(queryStatement);
+			
+			//passing the parameters to get the table returned here
 			table=CreateQueryTable(statement,queryStatement);
 			
 		}
+		//catch errors and display then as popup
 		catch(Exception e)
 		{
 			JOptionPane.showMessageDialog(this,e);
 		}
+		//table will be returned to the GUI, where it is being called
 		return table;
 	}
 	
@@ -48,7 +55,7 @@ public class CrimeQuery extends JFrame
 		try
 		{
 			String queryStatement="select sum("+this.getValue1()+"),sum("+this.getValue2()+") from CRIMES";
-			PreparedStatement statement=connection1.prepareStatement(queryStatement);
+			PreparedStatement statement=getConnection1().prepareStatement(queryStatement);
 			table=CreateQueryTable(statement,queryStatement);
 		}
 		catch(Exception e)
@@ -57,6 +64,8 @@ public class CrimeQuery extends JFrame
 		}
 		return table;
 	}
+	
+	//This will create top 10 worst or unsafe divisions
 	public JTable MaxQuery(String value)
 	{
 		try
@@ -64,7 +73,25 @@ public class CrimeQuery extends JFrame
 			String queryStatement1="SELECT * FROM \r\n" + 
 								   "    (SELECT station,divisions,"+value+" FROM crimes order by "+value+" desc) \r\n" + 
 								   "where rownum <= 10";
-			PreparedStatement statement=connection1.prepareStatement(queryStatement1);
+			PreparedStatement statement=getConnection1().prepareStatement(queryStatement1);
+			table=CreateQueryTable(statement,queryStatement1);
+		}
+		catch(Exception e)
+		{
+			JOptionPane.showMessageDialog(this,e);
+		}
+		return table;
+	}
+	
+	//This will create top 10 safe divisions
+	public JTable MinQuery(String value)
+	{
+		try
+		{
+			String queryStatement1="SELECT * FROM \r\n" + 
+								   "    (SELECT station,divisions,"+value+" FROM crimes order by "+value+") \r\n" + 
+								   "where rownum <= 10";
+			PreparedStatement statement=getConnection1().prepareStatement(queryStatement1);
 			table=CreateQueryTable(statement,queryStatement1);
 		}
 		catch(Exception e)
@@ -88,7 +115,7 @@ public class CrimeQuery extends JFrame
 			
 			ResultSet rs=statement.executeQuery(queryStatement); 
 			
-			//From here onwards this code is from StackOverflow
+			//From here onwards this code is from StackOverflow (can't find the link) but it is not my code. I do however understand the code as i have also commented it and checked it with system out prints
 			ResultSetMetaData md=rs.getMetaData();
 			
 			int columns=md.getColumnCount();
@@ -117,9 +144,12 @@ public class CrimeQuery extends JFrame
 		{
 			JOptionPane.showMessageDialog(this,e);
 		}
+		//create the table with the user selected query and return it to whichever function needs it
 		queryTable=new JTable(data,columnNames);
 		return queryTable;
 	}
+	
+	//Getters and Setters
 	
 	public String getValue1() {
 		return value1;
@@ -137,6 +167,14 @@ public class CrimeQuery extends JFrame
 	public void setValue2(String value2)
 	{
 		this.value2 = value2;
+	}
+
+	public Connection getConnection1() {
+		return connection1;
+	}
+
+	public void setConnection1(Connection connection1) {
+		this.connection1 = connection1;
 	}
 
 
