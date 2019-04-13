@@ -69,15 +69,16 @@ public class DatabaseGUI extends JFrame implements ActionListener, MouseListener
 		
 		getTopics1().setBackground(Color.white);
 		getTopics2().setBackground(Color.white);
-		getPanel1().setBackground(Color.white);
 		getButton3().setBackground(Color.LIGHT_GRAY);
 		getButton4().setBackground(Color.LIGHT_GRAY);
 		
 		
 		//setting up layout and adding a panel
 		setLayout(new BorderLayout());
-	
+		
 		setPanel1(new JPanel());
+		
+		getPanel1().setBackground(Color.white);
 		
 		//start the main menu
 		selectMenu();
